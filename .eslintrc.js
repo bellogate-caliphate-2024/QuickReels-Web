@@ -4,28 +4,28 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    'plugin:prettier/recommended'
   ],
   plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
     'prettier/prettier': ['error'],
     'react/prop-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn'
   },
   settings: {
     react: {
-      version: 'detect',
-    },
+      version: 'detect'
+    }
   },
   env: {
     browser: true,
-    node: true,
-  },
-};
+    node: true
+  }
+}

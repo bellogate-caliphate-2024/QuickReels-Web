@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint && stylelint '**/*.css'",
     "test": "echo \"No tests defined\" && exit 0"
   },
   "dependencies": {
@@ -39,6 +39,9 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.5.3",
+    "standard": "^17.1.2",
+    "stylelint": "^16.19.1",
+    "stylelint-config-standard": "^38.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
