@@ -1,29 +1,28 @@
-// components/auth/SocialButtons.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 export function SocialButtons({
-  callbackUrl = "../auth/app/page.tsx",
-  providers = ["google", "github"],
+  callbackUrl = '../auth/app/page.tsx',
+  providers = ['google', 'github'],
   className,
 }: {
   callbackUrl?: string;
-  providers?: ("google" | "github")[];
+  providers?: ('google' | 'github')[];
   className?: string;
 }) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
-  const handleSocialLogin = async (provider: "google" | "github") => {
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
     try {
       setLoadingProvider(provider);
       await signIn(provider, { callbackUrl });
     } catch (error) {
-      console.error("Social login error:", error);
+      console.error('Social login error:', error);
     } finally {
       setLoadingProvider(null);
     }
@@ -31,12 +30,12 @@ export function SocialButtons({
 
   const providerConfig = {
     google: {
-      name: "Google",
-      icon: "https://authjs.dev/img/providers/google.svg",
+      name: 'Google',
+      icon: 'https://authjs.dev/img/providers/google.svg',
     },
     github: {
-      name: "GitHub",
-      icon: "https://authjs.dev/img/providers/github.svg",
+      name: 'GitHub',
+      icon: 'https://authjs.dev/img/providers/github.svg',
     },
   };
 

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState } from 'react';
+import Link from 'next/link';
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,32 +13,32 @@ export default function SignUpPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
     const payload = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
+      name: formData.get('name'),
+      email: formData.get('email'),
+      password: formData.get('password'),
     };
-    console.log("Form data:", payload);
+    console.log('Form data:', payload);
 
     try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ payload }),
       });
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Something went wrong.");
+        throw new Error(errorData.message || 'Something went wrong.');
       }
 
       const result = await res.json();
-      console.log("Signup success:", result);
+      console.log('Signup success:', result);
 
       // Optionally redirect or show a success message
-      alert("Account created successfully!");
+      alert('Account created successfully!');
     } catch (err: any) {
-      console.error("Signup error:", err.message);
-      alert(err.message || "Signup failed.");
+      console.error('Signup error:', err.message);
+      alert(err.message || 'Signup failed.');
     } finally {
       setIsLoading(false);
     }
@@ -108,10 +108,10 @@ export default function SignUpPage() {
               type="submit"
               className="w-full rounded-lg bg-blue-600 p-3 text-white hover:bg-blue-700"
             >
-              {isLoading ? "Creating account..." : "Sign up"}
+              {isLoading ? 'Creating account...' : 'Sign up'}
             </button>
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link
                 href="/login"
                 className="font-medium text-blue-600 hover:underline"

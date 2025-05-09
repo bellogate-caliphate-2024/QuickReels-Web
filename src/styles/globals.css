@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -32,7 +32,7 @@ body {
 }
 
 .bg-home {
-  background-image: url("../public/What-Does-a-Social-Media-Manager-Do-Reach-Marketing-Pro-768x768.png");
+  background-image: url('../public/What-Does-a-Social-Media-Manager-Do-Reach-Marketing-Pro-768x768.png');
   background-size: cover;
   background-position: center;
 }
