@@ -1,57 +1,53 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState } from "react";
+import Link from "next/link";
 
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-  
-    const form = e.currentTarget
-    const formData = new FormData(form)
+    e.preventDefault();
+    setIsLoading(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-    }
-console.log('Form data:', payload);
-  
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    console.log("Form data:", payload);
+
     try {
-     const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payload}),
-      })
-      
-  
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payload }),
+      });
+
       if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.message || 'Something went wrong.')
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Something went wrong.");
       }
-  
-      const result = await res.json()
-      console.log('Signup success:', result)
-  
+
+      const result = await res.json();
+      console.log("Signup success:", result);
+
       // Optionally redirect or show a success message
-      alert('Account created successfully!')
+      alert("Account created successfully!");
     } catch (err: any) {
-      console.error('Signup error:', err.message)
-      alert(err.message || 'Signup failed.')
+      console.error("Signup error:", err.message);
+      alert(err.message || "Signup failed.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-  
+  };
 
   return (
     <section className="flex h-screen">
       {/* Left: Background Image */}
-      <div
-        className="hidden md:block w-1/2 bg-home"
-      />
+      <div className="hidden md:block w-1/2 bg-home" />
 
       {/* Right: Sign Up Form */}
       <div className="flex items-center justify-center w-full md:w-1/2 bg-gray-100 dark:bg-gray-900 px-6">
@@ -112,11 +108,14 @@ console.log('Form data:', payload);
               type="submit"
               className="w-full rounded-lg bg-blue-600 p-3 text-white hover:bg-blue-700"
             >
-              {isLoading ? 'Creating account...' : 'Sign up'}
+              {isLoading ? "Creating account..." : "Sign up"}
             </button>
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Already have an account?{' '}
-              <Link href="/login" className="font-medium text-blue-600 hover:underline">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="font-medium text-blue-600 hover:underline"
+              >
                 Sign in
               </Link>
             </p>
@@ -124,5 +123,5 @@ console.log('Form data:', payload);
         </div>
       </div>
     </section>
-  )
+  );
 }

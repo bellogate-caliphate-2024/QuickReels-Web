@@ -1,27 +1,25 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (data: { email: string; password: string }) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      console.log('Login data:', data)
+      console.log("Login data:", data);
     } catch (error) {
-      console.error('Login error:', error)
+      console.error("Login error:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <section className="flex h-screen">
       {/* Left: Background Image */}
-      <div
-        className="hidden md:block w-1/2 bg-home"
-      />
+      <div className="hidden md:block w-1/2 bg-home" />
 
       {/* Right: Login Form */}
       <div className="flex items-center justify-center w-full md:w-1/2 bg-gray-100 dark:bg-gray-900 px-6">
@@ -75,10 +73,10 @@ export default function LoginPage() {
               type="submit"
               className="w-full rounded-lg bg-blue-600 p-3 text-white hover:bg-blue-700"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? "Signing in..." : "Sign in"}
             </button>
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?{' '}
+              Don’t have an account yet?{" "}
               <a href="#" className="font-medium text-blue-600 hover:underline">
                 Sign up
               </a>
@@ -87,5 +85,5 @@ export default function LoginPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }
