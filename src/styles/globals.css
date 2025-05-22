@@ -32,7 +32,75 @@ body {
 }
 
 .bg-home {
-  background-image: url('../public/What-Does-a-Social-Media-Manager-Do-Reach-Marketing-Pro-768x768.png');
+  background-image: url('../public/reels.png');
   background-size: cover;
   background-position: center;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float 10s ease-in-out infinite 2s;
+}
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+@keyframes gradient-hover {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background-size: 200% auto;
+  background-image: linear-gradient(
+    -45deg,
+    #000000,
+    #3730a3,
+    #1e3a8a,
+    #3730a3,
+    #000000
+  );
+  animation: gradient-hover 5s ease infinite;
+}
+
+.animated-gradient:hover {
+  animation: gradient-hover 3s ease infinite;
 }
