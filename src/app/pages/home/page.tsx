@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Navbar from '../../../components/ui/Navbar';
 import UnauthorizedModal from '@/components/auth/statusModal';
 import { DeleteConfirmationModal } from '@/components/ui/deleteModal';
+import EditPostModal from '../../../components/ui/editpostModal';  // Edit Modal component
 import useAuthenticaton from '@/components/auth/useAuthentication';
 
 type Content = {
@@ -17,20 +18,16 @@ function HomePage() {
   const [contents, setContents] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedContent, setSelectedContent] = useState<Content | null>(null); // For editing
   const [unauthModalVisible, setUnauthModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        setTimeout(
-          () => {
-            localStorage.clear();
-          },
-          1000 * 60 * 60
-        );
+        setTimeout(() => { localStorage.clear() }, 1000 * 60 * 60);
         const res = await fetch(`http://localhost:3001/posts/getContents`, {
           method: 'GET',
           headers: {
@@ -51,13 +48,8 @@ function HomePage() {
           const cleaned = data.listOfContents.map((item: any) => ({
             _id: item._id,
             caption: item.caption || 'No caption provided',
-            videoUrl: Array.isArray(item.video_url)
-              ? item.video_url[0]
-              : item.video_url || '',
-
-            thumbnail: Array.isArray(item.thumbnail)
-              ? item.thumbnail[0]
-              : item.thumbnail,
+            videoUrl: Array.isArray(item.video_url) ? item.video_url[0] : item.video_url || '',
+            thumbnail: Array.isArray(item.thumbnail) ? item.thumbnail[0] : item.thumbnail,
           }));
 
           setContents(cleaned);
@@ -89,7 +81,7 @@ function HomePage() {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
-        },
+        }
       });
 
       if (res.ok) {
@@ -98,9 +90,40 @@ function HomePage() {
         console.error('Failed to delete item.');
       }
     } catch (err) {
+      console.error(err);
     } finally {
-      setShowModal(false);
+      setShowDeleteModal(false);
       setSelectedId(null);
+    }
+  };
+
+  const handleEdit = (content: Content) => {
+    setSelectedContent(content);
+  };
+
+  const handleUpdate = async (updatedContent: Content) => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`http://localhost:3001/posts/${updatedContent._id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedContent),
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setContents((prev) =>
+          prev.map((item) => (item._id === updatedContent._id ? updated : item))
+        );
+        setSelectedContent(null);
+      } else {
+        console.error('Failed to update content.');
+      }
+    } catch (err) {
+      console.error('Update error:', err);
     }
   };
 
@@ -157,9 +180,15 @@ function HomePage() {
                     🎬 Watch Video
                   </a>
                   <button
+                    onClick={() => handleEdit(content)}
+                    className="text-green-400 hover:text-green-300 font-medium transition"
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
                     onClick={() => {
                       setSelectedId(content._id);
-                      setShowModal(true);
+                      setShowDeleteModal(true);
                     }}
                     className="text-red-400 hover:text-red-300 font-medium transition"
                   >
@@ -172,10 +201,10 @@ function HomePage() {
         </div>
 
         {/* Delete Confirmation Modal */}
-        {showModal && (
+        {showDeleteModal && (
           <DeleteConfirmationModal
             onCancel={() => {
-              setShowModal(false);
+              setShowDeleteModal(false);
               setSelectedId(null);
             }}
             onConfirm={() => selectedId && handleDelete(selectedId)}
@@ -190,6 +219,15 @@ function HomePage() {
           }}
           message="You are not authorized to access this content. Please log in."
         />
+
+        {/* Edit Post Modal */}
+        {selectedContent && (
+          <EditPostModal
+            content={selectedContent}
+            onCancel={() => setSelectedContent(null)}
+            onUpdate={handleUpdate}
+          />
+        )}
       </main>
     </>
   );
