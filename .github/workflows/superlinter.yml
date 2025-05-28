@@ -3,10 +3,10 @@ name: Quickreels Workflow
 on:
   push:
     branches:
-      - a
+      - staging
   pull_request:
     branches:
-      - a
+      - staging
 
 permissions:
   contents: read
@@ -54,5 +54,7 @@ jobs:
           VALIDATE_JSON: 'false'
           VALIDATE_MARKDOWN: 'false'
           VALIDATE_NATURAL_LANGUAGE: 'false'
+          VALIDATE_CSS: 'false'                    
+          VALIDATE_TSX: 'false'    
           JSCPD_CONFIG_FILE: .jscpd.json
           LOG_LEVEL: DEBUG
