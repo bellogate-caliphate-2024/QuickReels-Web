@@ -6,39 +6,66 @@ import Link from 'next/link';
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+
+  //   const form = e.currentTarget;
+  //   const formData = new FormData(form);
+  //   const payload = {
+  //     name: formData.get('name'),
+  //     email: formData.get('email'),
+  //     password: formData.get('password'),
+  //   };
+  //   console.log('Form data:', payload);
+
+  //   try {
+  //     const res = await fetch('/api/signup', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ payload }),
+  //     });
+
+  //     if (!res.ok) {
+  //       const errorData = await res.json();
+  //       throw new Error(errorData.message || 'Something went wrong.');
+  //     }
+
+  //     const result = await res.json();
+  //     console.log('Signup success:', result);
+
+  //     // Optionally redirect or show a success message
+  //     alert('Account created successfully!');
+  //   } catch (err: any) {
+  //     console.error('Signup error:', err.message);
+  //     alert(err.message || 'Signup failed.');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  const handleSubmit = async (data: { email: string; password: string }) => {
     setIsLoading(true);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-    };
-    console.log('Form data:', payload);
-
     try {
-      const res = await fetch('/api/signup', {
+      const res = await fetch('http://localhost:3001/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payload }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Something went wrong.');
+        const error = await res.json();
+        throw new Error(error.message || 'Signup failed');
       }
 
       const result = await res.json();
       console.log('Signup success:', result);
 
-      // Optionally redirect or show a success message
-      alert('Account created successfully!');
-    } catch (err: any) {
-      console.error('Signup error:', err.message);
-      alert(err.message || 'Signup failed.');
+      // Optionally redirect
+      window.location.href = '/auth/login';
+    } catch (err) {
+      console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +82,16 @@ export default function SignUpPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             Create your account
           </h1>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const email = (form.email as HTMLInputElement).value;
+              const password = (form.password as HTMLInputElement).value;
+              handleSubmit({ email, password });
+            }}
+            className="space-y-6"
+          >
             <div>
               <label
                 htmlFor="name"
@@ -113,7 +149,7 @@ export default function SignUpPage() {
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
               Already have an account?{' '}
               <Link
-                href="/login"
+                href="/auth/login"
                 className="font-medium text-blue-600 hover:underline"
               >
                 Sign in
