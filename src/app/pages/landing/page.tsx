@@ -23,7 +23,7 @@ export default function LandingPage() {
           localStorage.clear();
         }, 1000 * 60 * 60);
 
-        const res = await fetch(`http://localhost:3001/users/getContents`, {
+        const res = await fetch(`http://localhost:3001/posts/getContents`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,17 +39,18 @@ export default function LandingPage() {
         const data = await res.json();
 
         if (Array.isArray(data.listOfContents)) {
-          const cleaned = data.listOfContents.map((item: any) => ({
-            _id: item._id,
-            caption: item.caption || 'No caption provided',
-            videoUrl: Array.isArray(item.video_url)
-              ? item.video_url[0]
-              : item.video_url || '',
-            thumbnail: Array.isArray(item.thumbnail)
-              ? item.thumbnail[0]
-              : item.thumbnail,
-          }));
-
+          const cleaned = data.listOfContents
+            .filter((item: any) => item && item._id)
+            .map((item: any) => ({
+              _id: item._id,
+              caption: item.caption || 'No caption provided',
+              videoUrl: Array.isArray(item.video_url)
+                ? item.video_url[0]
+                : item.video_url || '',
+              thumbnail: Array.isArray(item.thumbnail)
+                ? item.thumbnail[0]
+                : item.thumbnail,
+            }));
           setContents(cleaned);
         } else {
           console.error('Invalid data format:', data);
@@ -69,7 +70,7 @@ export default function LandingPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-black to-blue-900 text-white px-6 relative overflow-hidden">
+      <div className="min-h-screen flex flex-col bg-black text-white px-6 relative overflow-hidden">
         <div className="absolute top-20 left-20 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl animate-float"></div>
         <div className="absolute bottom-10 right-32 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl animate-float-delayed"></div>
 
@@ -91,25 +92,25 @@ export default function LandingPage() {
           </a>
 
           {/* 🎬 Video Content */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 w-full max-w-6xl">
             {loading ? (
               <p className="text-blue-200/70">Loading...</p>
             ) : error ? (
               <p className="text-red-400">{error}</p>
             ) : (
-              contents.map((content) => (
+              contents.slice(0, 6).map((content) => (
                 <div
                   key={content._id}
-                  className="bg-white/5 rounded-xl overflow-hidden shadow-lg hover:scale-[1.02] transition-transform duration-300 border border-white/10"
+                  className="bg-white/5 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 border border-white/10"
                 >
                   <video
-                    className="w-full h-64 object-cover"
+                    className="w-full h-40 object-cover"
                     src={content.videoUrl}
                     controls
                     poster={content.thumbnail}
                   />
-                  <div className="p-4">
-                    <p className="text-blue-100 font-semibold text-lg">
+                  <div className="p-2">
+                    <p className="text-blue-100 font-semibold text-sm truncate">
                       {content.caption}
                     </p>
                   </div>
