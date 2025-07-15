@@ -121,10 +121,14 @@ export default function LandingPage() {
 
           {/* Feature badges */}
           <div className="mt-12 flex justify-center gap-4 flex-wrap animate-fade-in-up delay-300">
-            <div className="bg-white/5 px-4 py-2 rounded-full text-sm border border-white/10 backdrop-blur-sm">
+            <a
+              href="/pages/upload"
+              className="bg-white/5 px-4 py-2 rounded-full text-sm border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-pointer"
+            >
               🚀 Instant Uploads
-            </div>
-            <div className="bg-white/5 px-4 py-2 rounded-full text-sm border border-white/10 backdrop-blur-sm">
+            </a>
+            <div
+                 className="bg-white/5 px-4 py-2 rounded-full text-sm border border-white/10 backdrop-blur-sm">
               🎨 Creative Tools
             </div>
             <div className="bg-white/5 px-4 py-2 rounded-full text-sm border border-white/10 backdrop-blur-sm">
